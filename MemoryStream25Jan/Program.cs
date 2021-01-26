@@ -16,15 +16,17 @@ namespace MemoryStream25Jan
                 byte[] file = File.ReadAllBytes("E:\\DP.png"); //Read all bytes in from a file
                 using (MemoryStream memory = new MemoryStream(file)) //Create a memory stream from those bytes
                 {
-                    memory.Seek(0, SeekOrigin.Begin);
-                    file = new byte[memory.Length];
-                    var count = memory.Read(file, 0, 20);
-                    while ((count = memory.ReadByte()) >= 0)
+                    using (BinaryReader br = new BinaryReader(memory))
                     {
-                        Console.WriteLine(Convert.ToChar(count));
+                        for (int i = 0; i < file.Length; i++)
+                        {
+                            byte result = br.ReadByte();
+                            Console.WriteLine(result);
+                        }
+
+                        Console.WriteLine("End of reading characters");
+                        Console.WriteLine("No. of characters = {0}\n", memory.Length.ToString());
                     }
-                    Console.WriteLine("End of reading characters");
-                    Console.WriteLine("Capacity = {0}\n", memory.Capacity.ToString());
                 }
             }
             catch (Exception ex)
